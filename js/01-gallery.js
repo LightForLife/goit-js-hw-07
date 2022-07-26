@@ -4,9 +4,9 @@ import { galleryItems } from "./gallery-items.js";
 // =========== Создание и рендер разметки по массиву данных =========== //
 
 const galleryBox = document.querySelector(".gallery");
-const itemsMarkup = createGalleryItemsMarkup(galleryItems);
+// const itemsMarkup = createGalleryItemsMarkup(galleryItems);
 
-galleryBox.insertAdjacentHTML("beforeend", itemsMarkup);
+// galleryBox.insertAdjacentHTML("beforeend", itemsMarkup);
 
 galleryBox.addEventListener("click", onGalleryBoxClick);
 
@@ -27,18 +27,35 @@ function createGalleryItemsMarkup(galleryItems) {
     .join("");
 }
 
+const itemsMarkup = createGalleryItemsMarkup(galleryItems);
+
+galleryBox.insertAdjacentHTML("beforeend", itemsMarkup);
+
 // Реализация делегирования на div.gallery и
 // получение url большого изображения.
 
 function onGalleryBoxClick(event) {
+  // Запрещаем обновление страницы при клике
   event.preventDefault();
 
-  const isImageGalary = event.target.classList.contains("gallery__image");
+  // Если кликнули не по картинке, выходим
+  const isImageGalary = event.target.nodeName;
 
-  if (!isImageGalary) {
+  if (isImageGalary !== "IMG") {
     return;
   }
-  console.log(event.target);
 
-  console.log(event.target.dataset.source);
+  // Получаем ссылку на оригинальное изображение
+  const originalImgLink = event.target.dataset.source;
+
+  // Показываем Lightbox
+  const instance = basicLightbox.create(`
+    <img src="${originalImgLink}" width="800" height="600">
+`);
+
+  instance.show();
+
+  // Закрываем Lightbox при нажатии клавиши Escape
+
+  // instance.close(() => console.log("lightbox not visible anymore"));
 }
