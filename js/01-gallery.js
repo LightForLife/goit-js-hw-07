@@ -1,14 +1,11 @@
 import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
-// =========== Создание и рендер разметки по массиву данных =========== //
+// Создаем разметку для изображений
 
 const galleryBox = document.querySelector(".gallery");
-// const itemsMarkup = createGalleryItemsMarkup(galleryItems);
 
-// galleryBox.insertAdjacentHTML("beforeend", itemsMarkup);
-
-galleryBox.addEventListener("click", onGalleryBoxClick);
+const itemsMarkup = createGalleryItemsMarkup(galleryItems);
 
 function createGalleryItemsMarkup(galleryItems) {
   return galleryItems
@@ -27,12 +24,11 @@ function createGalleryItemsMarkup(galleryItems) {
     .join("");
 }
 
-const itemsMarkup = createGalleryItemsMarkup(galleryItems);
-
+// Добавляем изображение в div.gallery
 galleryBox.insertAdjacentHTML("beforeend", itemsMarkup);
 
-// Реализация делегирования на div.gallery и
-// получение url большого изображения.
+// Ставим слушатель на изображение
+galleryBox.addEventListener("click", onGalleryBoxClick);
 
 function onGalleryBoxClick(event) {
   // Запрещаем обновление страницы при клике
@@ -50,12 +46,26 @@ function onGalleryBoxClick(event) {
 
   // Показываем Lightbox
   const instance = basicLightbox.create(`
-    <img src="${originalImgLink}" width="800" height="600">
-`);
-
+      <img src="${originalImgLink}" width="800" height="600">
+  `);
   instance.show();
 
-  // Закрываем Lightbox при нажатии клавиши Escape
+  // if (instance.show()) {
+  //   console.log("fff");
+  // }
 
-  // instance.close(() => console.log("lightbox not visible anymore"));
+  // Закрываем Lightbox при нажатии клавиши Escape
+  // window.addEventListener("keydown", onKeypressEscape);
+
+  if (instance.show()) {
+    window.addEventListener("keydown", onKeypressEscape);
+  }
+  function onKeypressEscape(event) {
+    const ESC_KEY_CODE = "Escape";
+    console.log(event.key);
+
+    if (event.code === ESC_KEY_CODE) instance.close();
+
+    // if (event.code === ESC_KEY_CODE) instance.close();
+  }
 }
