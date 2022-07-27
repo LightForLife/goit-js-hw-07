@@ -29,6 +29,7 @@ galleryBox.insertAdjacentHTML("beforeend", itemsMarkup);
 // Ставим слушатель на изображение
 galleryBox.addEventListener("click", onGalleryBoxClick);
 
+// Выполняем при клике
 function onGalleryBoxClick(event) {
   // Запрещаем обновление страницы при клике
   event.preventDefault();
