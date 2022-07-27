@@ -23,7 +23,6 @@ function createGalleryItemsMarkup(galleryItems) {
     })
     .join("");
 }
-
 // Добавляем изображение в div.gallery
 galleryBox.insertAdjacentHTML("beforeend", itemsMarkup);
 
@@ -40,32 +39,33 @@ function onGalleryBoxClick(event) {
   if (isImageGalary !== "IMG") {
     return;
   }
-
   // Получаем ссылку на оригинальное изображение
   const originalImgLink = event.target.dataset.source;
 
   // Показываем Lightbox
-  const instance = basicLightbox.create(`
+  const instance = basicLightbox.create(
+    `
       <img src="${originalImgLink}" width="800" height="600">
-  `);
+  `,
+    {
+      // При открытии вешаем слушатель
+      onShow: () => {
+        window.addEventListener("keydown", onKeyPressEscape);
+      },
+      // При закрытии снимаем слушатель
+      onClose: () => {
+        window.removeEventListener("keydown", onKeyPressEscape);
+      },
+    }
+  );
+
   instance.show();
 
-  // if (instance.show()) {
-  //   console.log("fff");
-  // }
-
   // Закрываем Lightbox при нажатии клавиши Escape
-  // window.addEventListener("keydown", onKeypressEscape);
 
-  if (instance.show()) {
-    window.addEventListener("keydown", onKeypressEscape);
-  }
-  function onKeypressEscape(event) {
+  function onKeyPressEscape(event) {
     const ESC_KEY_CODE = "Escape";
-    console.log(event.key);
 
     if (event.code === ESC_KEY_CODE) instance.close();
-
-    // if (event.code === ESC_KEY_CODE) instance.close();
   }
 }
